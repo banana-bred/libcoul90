@@ -3,7 +3,7 @@ version = "1.1.0"
 license = "MIT"
 maintainer = "j.forer@posteo.net"
 description = "Calculates real-valued Coulomb and Bessel functions"
-keywords = [ "real", "coulomb", "special", "spherical", "cylindrical", "bessel", "functions" ]
+keywords = [ "real", "coulomb", "special", "spherical", "cylindrical", "riccati", "bessel", "functions" ]
 
 [build]
 module-naming = true
