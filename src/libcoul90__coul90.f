@@ -1,5 +1,5 @@
 ! ================================================================================================================================ !
-submodule (libcoul90) coul90_submodule
+submodule (libcoul90) libcoul90__coul90
   !! Submodule containing the implementation of the COUL90 procedure
 
   implicit none
@@ -75,10 +75,10 @@ contains
     !!                                  AUCKLAND    MARCH   1991
     !!----------------------------------------------------------------------
 
-    use libcoul90_steed,     only: NFP, NPQ, IEXP, MINL, PACCQ
-    use libcoul90_deset,     only: CF1, P, Q, F, GAMM, WRONSK
+    use libcoul90__steed,     only: NFP, NPQ, IEXP, MINL, PACCQ
+    use libcoul90__deset,     only: CF1, P, Q, F, GAMM, WRONSK
     use iso_fortran_env,     only: dp => real64, stderr => error_unit
-    use libcoul90_constants, only: ZERO, HALF, ONE, TWO, TEN2, RT2DPI
+    use libcoul90__constants, only: ZERO, HALF, ONE, TWO, TEN2, RT2DPI
 
     integer, intent(in) :: LRANGE
     integer, intent(in) :: KFN
@@ -350,7 +350,7 @@ contains
     !!     AUTHOR:    A.R.BARNETT   FEB 1981    LAST UPDATE MARCH 1991
 
     use iso_fortran_env,     only: dp => real64
-    use libcoul90_constants, only: DZERO, ZERO, HALF, ONE, SIX, TEN, RL35, LOGE
+    use libcoul90__constants, only: DZERO, ZERO, HALF, ONE, SIX, TEN, RL35, LOGE
 
     real(dp), intent(in) :: X
     real(dp), intent(in) :: ETA
@@ -395,5 +395,5 @@ contains
   END SUBROUTINE
 
 ! ================================================================================================================================ !
-end submodule coul90_submodule
+end submodule libcoul90__coul90
 ! ================================================================================================================================ !

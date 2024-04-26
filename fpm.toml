@@ -1,23 +1,26 @@
 name = "libcoul90"
-version = "1.0.0"
+version = "1.1.0"
 license = "MIT"
 maintainer = "j.forer@posteo.net"
 description = "Calculates real-valued Coulomb and Bessel functions"
 keywords = [ "real", "coulomb", "special", "spherical", "cylindrical", "bessel", "functions" ]
 
+[build]
+module-naming = true
+
 [library]
 source-dir = "src"
 
-[dev-dependencies]
-test-drive.git = "https://github.com/fortran-lang/test-drive"
-test-drive.tag = "v0.4.0"
+# [dev-dependencies]
+# test-drive.git = "https://github.com/fortran-lang/test-drive"
+# test-drive.tag = "v0.4.0"
 
 [fortran]
 implicit-typing = false
 implicit-external = false
 source-form = "free"
 
-# [[test]]
-# name="coulcc-tests"
-# source-dir="test"
-# main="tester.f"
+[[test]]
+name="COUL90_TEST"
+source-dir="test"
+main="coul90_test.f"

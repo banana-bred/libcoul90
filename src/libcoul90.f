@@ -18,6 +18,8 @@ module libcoul90
   public :: cylbessy
   public :: coul90
   public :: coul90_wrapper
+  public :: ricbes
+  public :: sbesjy
 
   interface
     module subroutine coul90(X, ETA_IN, XLMIN, LRANGE, FC, GC, FCP, GCP, KFN, IFAIL)
@@ -33,6 +35,36 @@ module libcoul90
       real(dp), intent(out) :: FCP(0:)
       real(dp), intent(out) :: GCP(0:)
     end subroutine
+  end interface
+
+  interface
+    module subroutine ricbes(x,lmax, psi,chi,psid,chid, ifail)
+      use iso_fortran_env, only: dp => real64
+      integer, parameter :: LIMIT = 20000
+      integer, parameter :: MAXL = 1001
+      integer, intent(in) :: LMAX
+      integer, intent(out) :: IFAIL
+      real(dp), intent(in) :: X
+      real(dp), intent(out) :: PSI(0:MAXL)
+      real(dp), intent(out) :: PSID(0:MAXL)
+      real(dp), intent(out) :: CHI(0:MAXL)
+      real(dp), intent(out) :: CHID(0:MAXL)
+    end subroutine ricbes
+  end interface
+
+  interface
+    module subroutine sbesjy(X,LMAX, J,Y,JP,YP, IFAIL )
+      use iso_fortran_env, only: dp => real64
+      integer, parameter :: LIMIT = 20000
+      integer, parameter :: MAXL = 1001
+      integer, intent(in) :: LMAX
+      integer, intent(out) :: IFAIL
+      real(dp), intent(in) :: X
+      real(dp), intent(out) :: J(0:MAXL)
+      real(dp), intent(out) :: JP(0:MAXL)
+      real(dp), intent(out) :: Y(0:MAXL)
+      real(dp), intent(out) :: YP(0:MAXL)
+    end subroutine sbesjy
   end interface
 
   interface coulf

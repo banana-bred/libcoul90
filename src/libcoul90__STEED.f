@@ -1,6 +1,6 @@
 ! ================================================================================================================================ !
-module libcoul90_deset
-  !! Replaces the COMMON DESET block
+module libcoul90__steed
+  !! Replaces the COMMON STEED block
 
   use iso_fortran_env, only: dp => real64
 
@@ -10,20 +10,18 @@ module libcoul90_deset
 
   private
 
-  public :: CF1
-  public :: P
-  public :: Q
-  public :: F
-  public :: GAMM
-  public :: WRONSK
+  public :: NFP
+  public :: NPQ
+  public :: IEXP
+  public :: MINL
+  public :: PACCQ
 
-  real(dp) :: CF1
-  real(dp) :: P
-  real(dp) :: Q
-  real(dp) :: F
-  real(dp) :: GAMM
-  real(dp) :: WRONSK
+  integer  :: NFP
+  integer  :: NPQ
+  integer  :: IEXP
+  integer  :: MINL
+  real(dp) :: PACCQ
 
 ! ================================================================================================================================ !
-end module libcoul90_deset
+end module libcoul90__steed
 ! ================================================================================================================================ !

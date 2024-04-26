@@ -1,27 +1,20 @@
 ! ================================================================================================================================ !
-module libcoul90_steed
-  !! Replaces the COMMON STEED block
-
+module libcoul90__stede
+  !! Replaces the COMMON /STEDE/ block in sbesjy
   use iso_fortran_env, only: dp => real64
 
   implicit none
 
-  save
-
   private
 
+  public :: ERR
   public :: NFP
-  public :: NPQ
-  public :: IEXP
-  public :: MINL
-  public :: PACCQ
+  public :: NF
 
+  integer  :: NF
   integer  :: NFP
-  integer  :: NPQ
-  integer  :: IEXP
-  integer  :: MINL
-  real(dp) :: PACCQ
+  real(dp) :: ERR
 
 ! ================================================================================================================================ !
-end module libcoul90_steed
+end module libcoul90__stede
 ! ================================================================================================================================ !
