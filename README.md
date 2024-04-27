@@ -19,6 +19,12 @@ The archive file `libcoul90.a` and `.mod` files will be placed in the generated 
 These files are necessary to compile another program that uses this library.
 
 ## Using this version of `COUL90()`
+
+To use this project within your [fpm](https://github.com/fortran-lang/fpm) project, add the following to your `fpm.toml` file:
+
+    [dependencies]
+    libcoul90 = { git="https://github.com/banana-bred/libcoul90" }
+
 The module `libcoul90` contains the following public procedures :
 
 - `coulf(lambda,eta,x)` : return the regular Coulomb function $F_\lambda(\eta,x)$
