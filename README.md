@@ -25,6 +25,11 @@ To use this project within your [fpm](https://github.com/fortran-lang/fpm) proje
     [dependencies]
     libcoul90 = { git="https://github.com/banana-bred/libcoul90" }
 
+or
+
+    [dependencies]
+    libvoul90 = {'namespace'='COULXX'}
+
 The module `libcoul90` contains the following public procedures :
 
 - `coulf(lambda,eta,x)` : return the regular Coulomb function $F_\lambda(\eta,x)$
