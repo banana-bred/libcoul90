@@ -134,13 +134,13 @@ contains
       !! The Sommerfeld parameter η in F_λ(η, x)
     real(dp), intent(in) :: x
       !! The distance x in F_λ(η, x)
-    real(dp), intent(inout) :: f(:)
+    real(dp), intent(inout) :: f(0:)
       !! The array containing values of F.
-    real(dp), intent(inout) :: g(:)
+    real(dp), intent(inout) :: g(0:)
       !! The array containing values of G.
-    real(dp), intent(inout) :: fp(:)
+    real(dp), intent(inout) :: fp(0:)
       !! The array containing values of FP.
-    real(dp), intent(inout) :: gp(:)
+    real(dp), intent(inout) :: gp(0:)
       !! The array containing values of GP.
     integer :: ifail
     integer :: lrange
@@ -174,36 +174,47 @@ contains
     real(dp), intent(in) :: eta
     real(dp), intent(in) :: x
     real(dp) :: res
-    integer, parameter :: nl  = 1
     integer, parameter :: kfn = 0
+    integer, parameter :: nl = 1
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    allocate(f(0:lambda))
+    allocate(g(0:lambda))
+    allocate(fp(0:lambda))
+    allocate(gp(0:lambda))
     xlambda = real(lambda, kind = dp)
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = f(nl)
+    res = f(lambda)
   end function coulf_ilambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
   function coulf_rlambda(lambda, eta, x) result(res)
     !! Returns the regular Coulomb function F_λ(η, x) for real λ
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,      only: dp => real64
+    use libcoul90__constants, only: ACCUR
     real(dp), intent(in) :: lambda
     real(dp), intent(in) :: eta
     real(dp), intent(in) :: x
     real(dp) :: res
     integer, parameter :: nl  = 1
     integer, parameter :: kfn = 0
+    integer :: ilambda
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    ilambda = max( int(lambda + ACCUR), 0 )
+    allocate(f(0:ilambda))
+    allocate(g(0:ilambda))
+    allocate(fp(0:ilambda))
+    allocate(gp(0:ilambda))
     xlambda = lambda
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = f(nl)
+    res = f(ilambda)
   end function coulf_rlambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
@@ -221,33 +232,44 @@ contains
     integer, parameter :: nl  = 1
     integer, parameter :: kfn = 0
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    allocate(f(0:lambda))
+    allocate(g(0:lambda))
+    allocate(fp(0:lambda))
+    allocate(gp(0:lambda))
     xlambda = real(lambda, kind = dp)
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = g(nl)
+    res = g(lambda)
   end function coulg_ilambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
   function coulg_rlambda(lambda, eta, x) result(res)
     !! Returns the irregular Coulomb function G_λ(η, x) for real λ
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,      only: dp => real64
+    use libcoul90__constants, only: ACCUR
     real(dp), intent(in) :: lambda
     real(dp), intent(in) :: eta
     real(dp), intent(in) :: x
     real(dp) :: res
     integer, parameter :: nl  = 1
     integer, parameter :: kfn = 0
+    integer :: ilambda
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    ilambda = max( int(lambda + ACCUR), 0 )
+    allocate(f(0:ilambda))
+    allocate(g(0:ilambda))
+    allocate(fp(0:ilambda))
+    allocate(gp(0:ilambda))
     xlambda = lambda
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = g(nl)
+    res = g(ilambda)
   end function coulg_rlambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
@@ -265,33 +287,44 @@ contains
     integer, parameter :: kfn = 1
     real(dp) :: xlambda
     real(dp) :: eta = 0.0_dp
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    allocate(f(0:lambda))
+    allocate(g(0:lambda))
+    allocate(fp(0:lambda))
+    allocate(gp(0:lambda))
     xlambda = real(lambda, kind = dp)
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = f(nl)
+    res = f(lambda)
   end function sphbessj_ilambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
   function sphbessj_rlambda(lambda, x) result(res)
     !! Returns the spherical Bessel function of the first kind j_λ(x) for real λ
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,      only: dp => real64
+    use libcoul90__constants, only: ACCUR
     real(dp), intent(in) :: lambda
     real(dp), intent(in) :: x
     real(dp) :: res
     integer, parameter :: nl  = 1
     integer, parameter :: kfn = 1
+    integer :: ilambda
     real(dp) :: eta = 0.0_dp
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    ilambda = max( int(lambda + ACCUR), 0 )
+    allocate(f(0:ilambda))
+    allocate(g(0:ilambda))
+    allocate(fp(0:ilambda))
+    allocate(gp(0:ilambda))
     xlambda = lambda
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = f(nl)
+    res = f(ilambda)
   end function sphbessj_rlambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
@@ -309,33 +342,44 @@ contains
     integer, parameter :: kfn = 1
     real(dp) :: eta = 0.0_dp
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    allocate(f(0:lambda))
+    allocate(g(0:lambda))
+    allocate(fp(0:lambda))
+    allocate(gp(0:lambda))
     xlambda = real(lambda, kind = dp)
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = g(nl)
+    res = g(lambda)
   end function sphbessy_ilambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
   function sphbessy_rlambda(lambda, x) result(res)
     !! Returns the spherical Bessel function of the second kind y_λ(x) for real λ
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,      only: dp => real64
+    use libcoul90__constants, only: ACCUR
     real(dp), intent(in) :: lambda
     real(dp), intent(in) :: x
     real(dp) :: res
     integer, parameter :: nl  = 1
     integer, parameter :: kfn = 1
+    integer :: ilambda
     real(dp) :: eta = 0.0_dp
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    ilambda = max( int(lambda + ACCUR), 0 )
+    allocate(f(0:ilambda))
+    allocate(g(0:ilambda))
+    allocate(fp(0:ilambda))
+    allocate(gp(0:ilambda))
     xlambda = lambda
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = g(nl)
+    res = g(ilambda)
   end function sphbessy_rlambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
@@ -353,33 +397,44 @@ contains
     integer, parameter :: kfn = 2
     real(dp) :: eta = 0.0_dp
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    allocate(f(0:lambda))
+    allocate(g(0:lambda))
+    allocate(fp(0:lambda))
+    allocate(gp(0:lambda))
     xlambda = real(lambda, kind = dp)
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = f(nl)
+    res = f(lambda)
   end function cylbessj_ilambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
   function cylbessj_rlambda(lambda, x) result(res)
     !! Returns the (cylindrical) Bessel function of the second kind J_λ(x) for real λ
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,      only: dp => real64
+    use libcoul90__constants, only: ACCUR
     real(dp), intent(in) :: lambda
     real(dp), intent(in) :: x
     real(dp) :: res
     integer, parameter :: nl  = 1
     integer, parameter :: kfn = 2
+    integer :: ilambda
     real(dp) :: eta = 0.0_dp
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    ilambda = max( int(lambda + ACCUR), 0 )
+    allocate(f(0:ilambda))
+    allocate(g(0:ilambda))
+    allocate(fp(0:ilambda))
+    allocate(gp(0:ilambda))
     xlambda = lambda
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = f(nl)
+    res = f(ilambda)
   end function cylbessj_rlambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
@@ -397,33 +452,44 @@ contains
     integer, parameter :: kfn = 2
     real(dp) :: eta = 0.0_dp
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    allocate(f(0:lambda))
+    allocate(g(0:lambda))
+    allocate(fp(0:lambda))
+    allocate(gp(0:lambda))
     xlambda = real(lambda, kind = dp)
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = g(nl)
+    res = g(lambda)
   end function cylbessy_ilambda
 
   !------------------------------------------------------------------------------------------------------------------------------- !
   function cylbessy_rlambda(lambda, x) result(res)
     !! Returns the (cylindrical) Bessel function of the second kind Y_λ(x) for real λ
-    use iso_fortran_env, only: dp => real64
+    use iso_fortran_env,      only: dp => real64
+    use libcoul90__constants, only: ACCUR
     real(dp), intent(in) :: lambda
     real(dp), intent(in) :: x
     real(dp) :: res
     integer, parameter :: nl  = 1
     integer, parameter :: kfn = 2
+    integer :: ilambda
     real(dp) :: eta = 0.0_dp
     real(dp) :: xlambda
-    real(dp) :: f(nl)
-    real(dp) :: g(nl)
-    real(dp) :: fp(nl)
-    real(dp) :: gp(nl)
+    real(dp), allocatable :: f(:)
+    real(dp), allocatable :: g(:)
+    real(dp), allocatable :: fp(:)
+    real(dp), allocatable :: gp(:)
+    ilambda = max( int(lambda + ACCUR), 0 )
+    allocate(f(0:ilambda))
+    allocate(g(0:ilambda))
+    allocate(fp(0:ilambda))
+    allocate(gp(0:ilambda))
     xlambda = lambda
     call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
-    res = g(nl)
+    res = g(ilambda)
   end function cylbessy_rlambda
 
   ! ------------------------------------------------------------------------------------------------------------------------------ !

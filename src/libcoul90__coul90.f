@@ -87,6 +87,7 @@ contains
     real(dp), intent(in) :: XLMIN
     real(dp), intent(in) :: ETA_IN
     ! real(dp) :: FC (0:*), GC (0:*), FCP(0:*), GCP(0:*)
+    ! real(dp), intent(out) :: FC (0:*), GC (0:*), FCP(0:*), GCP(0:*)
     real(dp), intent(out) :: FC (0:), GC (0:), FCP(0:), GCP(0:)
       !! ARRAYS INDEXED FROM 0 INSIDE SUBROUTINE: STORAGE FROM MINL
 
@@ -320,6 +321,7 @@ contains
         FCP(L)  = OMEGA * ( FCP(L)  -  ALPHA * FC(L) )
         FC (L)  = OMEGA *   FC (L)
     END DO
+
     RETURN
 
     !------------------   ERROR MESSAGES
@@ -338,6 +340,7 @@ contains
     120 IFAIL =  2
     WRITE (stderr, 1020) LIMIT,P,Q,DPP,DQ,ACCUR
     1020 FORMAT(' CF2 HAS FAILED TO CONVERGE AFTER ',I7,' ITERATIONS P,Q,DPP,DQ,ACCUR =  ',1P4D17.7,D12.3/)
+
 
   END SUBROUTINE COUL90
 
