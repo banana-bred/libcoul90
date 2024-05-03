@@ -28,7 +28,7 @@ To use this project within your [fpm](https://github.com/fortran-lang/fpm) proje
 or
 
     [dependencies]
-    libvoul90 = {'namespace'='COULXX'}
+    libcoul90 = {'namespace'='COULXX'}
 
 The module `libcoul90` contains the following public procedures :
 
