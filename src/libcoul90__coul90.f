@@ -107,8 +107,11 @@ contains
     !----------------CHANGE ACCUR TO SUIT MACHINE AND PRECISION REQUIRED
     ! ACCUR = 1.0D-14
 
-    real(dp), parameter :: ACC8 = epsilon(1.0_dp)
-    real(dp), parameter :: ACCUR = 100 * ACC8
+    ! real(dp), parameter :: ACC8 = epsilon(1.0_dp)
+    ! real(dp), parameter :: ACCUR = 100 * ACC8
+    real(dp), parameter :: ACCUR = 1e-14_dp
+      !! Set this explicitly, or else the algorithm fails too early and tries to take the sqrt
+      !! of a negative real (dsqrt(q))
 
     integer :: L, MAXL
     logical :: ETANE0, XLTURN
