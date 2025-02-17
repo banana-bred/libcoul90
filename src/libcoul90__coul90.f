@@ -77,8 +77,8 @@ contains
 
     use libcoul90__steed,     only: NFP, NPQ, IEXP, MINL, PACCQ
     use libcoul90__deset,     only: CF1, P, Q, F, GAMM, WRONSK
-    use iso_fortran_env,     only: sp => real32, dp => real64, stderr => error_unit
-    use libcoul90__constants, only: TWO, TEN2, RT2DPI
+    use iso_fortran_env,     only: dp => real64, stderr => error_unit
+    use libcoul90__constants, only: ZERO, HALF, ONE, TWO, TEN2, RT2DPI
 
     integer, intent(in) :: LRANGE
     integer, intent(in) :: KFN
@@ -113,14 +113,6 @@ contains
     integer :: L, MAXL
     logical :: ETANE0, XLTURN
 
-    real(sp), parameter :: ZERO  = 0.0_sp
-    real(sp), parameter :: HALF  = 0.5_sp
-    real(sp), parameter :: ONE   = 1.0_sp
-    real(sp), parameter :: SIX   = 6.0_sp
-    real(sp), parameter :: TEN   = 10.0_sp
-    real(sp), parameter :: RL35  = 35.0_sp
-    real(sp), parameter :: ALOGE = 0.4342945_sp
-    real(sp) :: GH2, XLL1, HLL, HL, SL, RL2, GH, PHI, PHI10
     real(dp) :: ACCH
     real(dp) :: XINV, PK, C, D, PK1, ETAK, RK2, TK, DCF1, DEN, XLM, XLL
     real(dp) :: EL, XL, RL, SL, FCMAXL, FCMINL, GCMINL, OMEGA
@@ -360,8 +352,8 @@ contains
     !!     CALLS DMAX1, SQRT, LOG, EXP, ATAN2, FLOAT, INT
     !!     AUTHOR:    A.R.BARNETT   FEB 1981    LAST UPDATE MARCH 1991
 
-    use iso_fortran_env,     only: dp => real64
-    use libcoul90__constants, only: DZERO, ZERO, HALF, ONE, SIX, TEN, RL35, LOGE
+    use iso_fortran_env,      only: sp => real32, dp => real64
+    use libcoul90__constants, only: DZERO
 
     real(dp), intent(in) :: X
     real(dp), intent(in) :: ETA
@@ -369,16 +361,25 @@ contains
     real(dp), intent(out) :: FJWKB
     real(dp), intent(out) :: GJWKB
 
+    real(sp), parameter :: ZERO  = 0.0_sp
+    real(sp), parameter :: HALF  = 0.5_sp
+    real(sp), parameter :: ONE   = 1.0_sp
+    real(sp), parameter :: SIX   = 6.0_sp
+    real(sp), parameter :: TEN   = 10.0_sp
+    real(sp), parameter :: RL35  = 35.0_sp
+    real(sp), parameter :: ALOGE = 0.4342945_sp
+
+    real(sp) :: GH2, XLL1, HLL, HL, SL, RL2, GH, PHI, PHI10
+
     INTEGER, parameter :: MAXEXP = 300
 
     integer :: IEXP
-    REAL(dp) :: GH2, XLL1, HLL, HL, SL, RL2, GH, PHI, PHI10
 
     !----------------------------------------------------------------------
-    ! REAL(dp) ::    ZERO,HALF,ONE,SIX,TEN,RL35,LOGE
+    ! REAL(dp) ::    ZERO,HALF,ONE,SIX,TEN,RL35,ALOGE
     ! PARAMETER  ( MAXEXP = 300 )
     ! DATA  ZERO,HALF,ONE,SIX,TEN  /0.0E0, 0.5E0, 1.0E0, 6.0E0, 1.0E1/
-    ! DATA DZERO,RL35,LOGE /0.0D0, 35.0E0, 0.43429 45 E0 /
+    ! DATA DZERO,RL35,ALOGE /0.0D0, 35.0E0, 0.43429 45 E0 /
     !----------------------------------------------------------------------
     ! OOSE MAXEXP NEAR MAX EXPONENT RANGE E.G. 1.D300 FOR real(dp)
     !----------------------------------------------------------------------
@@ -393,7 +394,7 @@ contains
     GH   = SQRT(GH2 + HLL) / X
     PHI  = X*GH - HALF*( HL*LOG((GH + SL)**2 / RL2) - LOG(GH) )
     IF ( ETA /= ZERO ) PHI = PHI - ETA * ATAN2(X*GH,X - ETA)
-    PHI10 = -PHI * LOGE
+    PHI10 = -PHI * ALOGE
     IEXP  =  INT(PHI10)
     IF ( IEXP > MAXEXP ) THEN
         GJWKB = TEN**(PHI10 - FLOAT(IEXP))
@@ -403,7 +404,7 @@ contains
     ENDIF
     FJWKB = HALF / (GH * GJWKB)
 
-  END SUBROUTINE
+  END SUBROUTINE JWKB
 
 ! ================================================================================================================================ !
 end submodule libcoul90__coul90
