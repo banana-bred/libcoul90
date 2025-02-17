@@ -222,11 +222,16 @@ contains
 
     IF( XLTURN ) CALL JWKB( X,ETA,DMAX1(XLM,ZERO),FJWKB,GJWKB,IEXP )
     IF( IEXP > 1 .OR. GJWKB > (ONE / (ACCH*TEN2)) ) THEN
-        OMEGA = FJWKB
-        GAMM = GJWKB * OMEGA
-        gammai = ONE/GAMM
-        P     = F
-        Q     = ONE
+        check_infs: block
+            use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+            OMEGA = FJWKB
+            if(ieee_is_finite(gjwkb) .eqv. .true.) then
+              GAMM = GJWKB * OMEGA
+              gammai = ONE/GAMM
+            endif
+            P     = F
+            Q     = ONE
+        end block check_infs
     ELSE                                     ! find cf2
         XLTURN = .FALSE.
         PK =  ZERO
