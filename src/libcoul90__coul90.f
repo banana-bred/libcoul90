@@ -77,8 +77,8 @@ contains
 
     use libcoul90__steed,     only: NFP, NPQ, IEXP, MINL, PACCQ
     use libcoul90__deset,     only: CF1, P, Q, F, GAMM, WRONSK
-    use iso_fortran_env,     only: dp => real64, stderr => error_unit
-    use libcoul90__constants, only: ZERO, HALF, ONE, TWO, TEN2, RT2DPI
+    use iso_fortran_env,     only: sp => real32, dp => real64, stderr => error_unit
+    use libcoul90__constants, only: TWO, TEN2, RT2DPI
 
     integer, intent(in) :: LRANGE
     integer, intent(in) :: KFN
@@ -113,6 +113,14 @@ contains
     integer :: L, MAXL
     logical :: ETANE0, XLTURN
 
+    real(sp), parameter :: ZERO  = 0.0_sp
+    real(sp), parameter :: HALF  = 0.5_sp
+    real(sp), parameter :: ONE   = 1.0_sp
+    real(sp), parameter :: SIX   = 6.0_sp
+    real(sp), parameter :: TEN   = 10.0_sp
+    real(sp), parameter :: RL35  = 35.0_sp
+    real(sp), parameter :: ALOGE = 0.4342945_sp
+    real(sp) :: GH2, XLL1, HLL, HL, SL, RL2, GH, PHI, PHI10
     real(dp) :: ACCH
     real(dp) :: XINV, PK, C, D, PK1, ETAK, RK2, TK, DCF1, DEN, XLM, XLL
     real(dp) :: EL, XL, RL, SL, FCMAXL, FCMINL, GCMINL, OMEGA
