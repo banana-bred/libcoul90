@@ -107,8 +107,11 @@ contains
     !----------------CHANGE ACCUR TO SUIT MACHINE AND PRECISION REQUIRED
     ! ACCUR = 1.0D-14
 
-    real(dp), parameter :: ACC8 = epsilon(1.0_dp)
-    real(dp), parameter :: ACCUR = 100 * ACC8
+    ! real(dp), parameter :: ACC8 = epsilon(1.0_dp)
+    ! real(dp), parameter :: ACCUR = 100 * ACC8
+    real(dp), parameter :: ACCUR = 1e-14_dp
+      !! Set this explicitly, or else the algorithm fails too early and tries to take the sqrt
+      !! of a negative real (dsqrt(q))
 
     integer :: L, MAXL
     logical :: ETANE0, XLTURN
@@ -219,11 +222,16 @@ contains
 
     IF( XLTURN ) CALL JWKB( X,ETA,DMAX1(XLM,ZERO),FJWKB,GJWKB,IEXP )
     IF( IEXP > 1 .OR. GJWKB > (ONE / (ACCH*TEN2)) ) THEN
-        OMEGA = FJWKB
-        GAMM = GJWKB * OMEGA
-        gammai = ONE/GAMM
-        P     = F
-        Q     = ONE
+        check_infs: block
+            use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+            OMEGA = FJWKB
+            if(ieee_is_finite(gjwkb) .eqv. .true.) then
+              GAMM = GJWKB * OMEGA
+              gammai = ONE/GAMM
+            endif
+            P     = F
+            Q     = ONE
+        end block check_infs
     ELSE                                     ! find cf2
         XLTURN = .FALSE.
         PK =  ZERO
@@ -352,8 +360,8 @@ contains
     !!     CALLS DMAX1, SQRT, LOG, EXP, ATAN2, FLOAT, INT
     !!     AUTHOR:    A.R.BARNETT   FEB 1981    LAST UPDATE MARCH 1991
 
-    use iso_fortran_env,     only: dp => real64
-    use libcoul90__constants, only: DZERO, ZERO, HALF, ONE, SIX, TEN, RL35, LOGE
+    use iso_fortran_env,      only: sp => real32, dp => real64
+    use libcoul90__constants, only: DZERO
 
     real(dp), intent(in) :: X
     real(dp), intent(in) :: ETA
@@ -361,16 +369,25 @@ contains
     real(dp), intent(out) :: FJWKB
     real(dp), intent(out) :: GJWKB
 
+    real(sp), parameter :: ZERO  = 0.0_sp
+    real(sp), parameter :: HALF  = 0.5_sp
+    real(sp), parameter :: ONE   = 1.0_sp
+    real(sp), parameter :: SIX   = 6.0_sp
+    real(sp), parameter :: TEN   = 10.0_sp
+    real(sp), parameter :: RL35  = 35.0_sp
+    real(sp), parameter :: ALOGE = 0.4342945_sp
+
+    real(sp) :: GH2, XLL1, HLL, HL, SL, RL2, GH, PHI, PHI10
+
     INTEGER, parameter :: MAXEXP = 300
 
     integer :: IEXP
-    REAL(dp) :: GH2, XLL1, HLL, HL, SL, RL2, GH, PHI, PHI10
 
     !----------------------------------------------------------------------
-    ! REAL(dp) ::    ZERO,HALF,ONE,SIX,TEN,RL35,LOGE
+    ! REAL(dp) ::    ZERO,HALF,ONE,SIX,TEN,RL35,ALOGE
     ! PARAMETER  ( MAXEXP = 300 )
     ! DATA  ZERO,HALF,ONE,SIX,TEN  /0.0E0, 0.5E0, 1.0E0, 6.0E0, 1.0E1/
-    ! DATA DZERO,RL35,LOGE /0.0D0, 35.0E0, 0.43429 45 E0 /
+    ! DATA DZERO,RL35,ALOGE /0.0D0, 35.0E0, 0.43429 45 E0 /
     !----------------------------------------------------------------------
     ! OOSE MAXEXP NEAR MAX EXPONENT RANGE E.G. 1.D300 FOR real(dp)
     !----------------------------------------------------------------------
@@ -385,17 +402,19 @@ contains
     GH   = SQRT(GH2 + HLL) / X
     PHI  = X*GH - HALF*( HL*LOG((GH + SL)**2 / RL2) - LOG(GH) )
     IF ( ETA /= ZERO ) PHI = PHI - ETA * ATAN2(X*GH,X - ETA)
-    PHI10 = -PHI * LOGE
+    PHI10 = -PHI * ALOGE
     IEXP  =  INT(PHI10)
     IF ( IEXP > MAXEXP ) THEN
         GJWKB = TEN**(PHI10 - FLOAT(IEXP))
     ELSE
-        GJWKB = EXP(-PHI)
+        ! -- exp(-phi) generates an overflow due to the single precision for exp
+        !    much smaller than the original maxexp = 300
+        GJWKB = EXP(-real(PHI, kind = dp))
         IEXP  = 0
     ENDIF
     FJWKB = HALF / (GH * GJWKB)
 
-  END SUBROUTINE
+  END SUBROUTINE JWKB
 
 ! ================================================================================================================================ !
 end submodule libcoul90__coul90
