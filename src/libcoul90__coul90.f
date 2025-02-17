@@ -407,7 +407,9 @@ contains
     IF ( IEXP > MAXEXP ) THEN
         GJWKB = TEN**(PHI10 - FLOAT(IEXP))
     ELSE
-        GJWKB = EXP(-PHI)
+        ! -- exp(-phi) generates an overflow due to the single precision for exp
+        !    much smaller than the original maxexp = 300
+        GJWKB = EXP(-real(PHI, kind = dp))
         IEXP  = 0
     ENDIF
     FJWKB = HALF / (GH * GJWKB)
