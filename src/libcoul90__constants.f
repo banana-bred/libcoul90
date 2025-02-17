@@ -36,7 +36,8 @@ module libcoul90__constants
   real(dp), parameter :: RL35   = 35.0_dp
   real(dp), parameter :: LOGE   = 0.4242945_dp
   real(dp), parameter :: SMALL  = 1e-150_dp
-  real(dp), parameter :: ACCUR = 100 * epsilon(ZERO)
+  ! real(dp), parameter :: ACCUR = 100 * epsilon(ZERO)
+  real(dp), parameter :: ACCUR = 1e-14_dp
   ! real(qp), parameter :: RT2DPI = 0.79788456080286535587989211986876373_dp ! -- sqrt(2/π)
 
 ! ================================================================================================================================ !
