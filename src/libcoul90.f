@@ -244,15 +244,11 @@ contains
     integer, parameter :: nl = 1
     real(dp) :: xlambda
     real(dp), allocatable :: f(:)
-    real(dp), allocatable :: g(:)
     real(dp), allocatable :: fp(:)
-    real(dp), allocatable :: gp(:)
     allocate(f(0:lambda))
-    allocate(g(0:lambda))
     allocate(fp(0:lambda))
-    allocate(gp(0:lambda))
     xlambda = real(lambda, kind = dp)
-    call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
+    call coul90f_wrapper(xlambda, nl, eta, x, f, fp, kfn)
     res = f(lambda)
   end function coulf_ilambda
 
@@ -270,16 +266,12 @@ contains
     integer :: ilambda
     real(dp) :: xlambda
     real(dp), allocatable :: f(:)
-    real(dp), allocatable :: g(:)
     real(dp), allocatable :: fp(:)
-    real(dp), allocatable :: gp(:)
     ilambda = max( int(lambda + ACCUR), 0 )
     allocate(f(0:ilambda))
-    allocate(g(0:ilambda))
     allocate(fp(0:ilambda))
-    allocate(gp(0:ilambda))
     xlambda = lambda
-    call coul90_wrapper(xlambda, nl, eta, x, f, fp, g, gp, kfn)
+    call coul90f_wrapper(xlambda, nl, eta, x, f, fp, kfn)
     res = f(ilambda)
   end function coulf_rlambda
 
